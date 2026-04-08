@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cyberpunk Terminal</title>
+<style>
+  body {
+    margin: 0;
+    font-family: monospace;
+    background: radial-gradient(circle at center, #001a00, #000000);
+    color: #39ff14;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  .card {
+    background: black;
+    border: 2px solid #39ff14;
+    padding: 30px;
+    max-width: 600px;
+    width: 100%;
+    box-shadow: 0 0 20px #39ff14;
+    text-align: center;
+  }
+  .glow {
+    text-shadow: 0 0 5px #39ff14, 0 0 10px #39ff14;
+  }
+  .flicker { animation: flicker 1s infinite; }
+  @keyframes flicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity:1; }
+    20%, 22%, 24%, 55% { opacity:0.4; }
+  }
+  .terminal {
+    border: 1px solid #39ff14;
+    padding: 15px;
+    background: #000;
+    color: #39ff14;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+  }
+  .terminal input {
+    width: 60%;
+    padding: 8px;
+    background: black;
+    border: 1px solid #39ff14;
+    color: #39ff14;
+    outline: none;
+    margin-top: 5px;
+    text-align: center;
+  }
+  .terminal button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background: black;
+    border: 1px solid #39ff14;
+    color: #39ff14;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .terminal button:hover {
+    background: #39ff14;
+    color: black;
+  }
+  #errorMsg {
+    margin-top: 8px;
+    color: red;
+    font-weight: bold;
+    display: none;
+  }
+  #escapeContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  #escapeContainer h1 {
+    margin-bottom: 20px;
+  }
+  #escapeContainer button {
+    padding: 12px 30px;
+    font-size: 1.2em;
+    font-weight: bold;
+    background: black;
+    border: 2px solid #39ff14;
+    color: #39ff14;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+  }
+  #escapeContainer button:hover {
+    background: #39ff14;
+    color: black;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <!-- Story text -->
+    <p id="typedText" class="glow"></p>
+
+    <!-- Terminal -->
+    <div id="terminal" class="terminal flicker">
+      <label>&gt; Enter access key:</label>
+      <input type="text" id="keyInput">
+      <button id="submitBtn">Submit</button>
+      <div id="errorMsg">Access Denied</div>
+    </div>
+
+    <!-- Escape container dynamically created -->
+    <div id="escapeWrapper"></div>
+  </div>
+
+<script>
+const fullText = "As you enter the room, a low robotic hum ruminates around the walls. A dim terminal flickers to life, mounted coldly against the metal surface.";
+const typedTextEl = document.getElementById('typedText');
+let i = 0;
+const speed = 40;
+
+// Typing animation for story text
+function typeWriter() {
+  if (i < fullText.length) {
+    typedTextEl.innerHTML = fullText.slice(0, i + 1)
+      .replace(/robotic/g, '<span style="font-weight:bold; color:#7fff00;">robotic</span>');
+    i++;
+    setTimeout(typeWriter, speed);
+  }
+}
+typeWriter();
+
+// Secret key
+const SECRET_KEY = "ACCESS-GRANTED-42";
+
+const input = document.getElementById('keyInput');
+const submitBtn = document.getElementById('submitBtn');
+const errorMsg = document.getElementById('errorMsg');
+const terminalDiv = document.getElementById('terminal');
+const escapeWrapper = document.getElementById('escapeWrapper');
+const typedText = document.getElementById('typedText');
+
+submitBtn.addEventListener('click', () => {
+  if (input.value.trim() === SECRET_KEY) {
+    errorMsg.style.display = 'none';
+    // Hide terminal and story
+    terminalDiv.style.display = 'none';
+    typedText.style.display = 'none';
+
+    // Create Access Granted view dynamically
+    const escapeContainer = document.createElement('div');
+    escapeContainer.id = "escapeContainer";
+    escapeContainer.classList.add('glow', 'flicker');
+    escapeContainer.innerHTML = `
+      <h1>Access Granted</h1>
+      <button id="escapeBtn">Escape?</button>
+    `;
+    escapeWrapper.appendChild(escapeContainer);
+
+    // Fade in the Escape button
+    const btn = document.getElementById('escapeBtn');
+    setTimeout(() => { btn.style.opacity = 1; }, 50);
+  } else {
+    errorMsg.style.display = 'block';
+  }
+});
+</script>
+</body>
+</html>
