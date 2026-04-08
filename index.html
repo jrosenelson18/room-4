@@ -154,9 +154,15 @@ submitBtn.addEventListener('click', () => {
     escapeContainer.id = "escapeContainer";
     escapeContainer.classList.add('glow', 'flicker');
     escapeContainer.innerHTML = `
-      <h1>Access Granted</h1>
-      <button id="escapeBtn">Escape?</button>
-    `;
+  <h1>Access Granted</h1>
+  <button id="escapeBtn">Escape?</button>
+`;
+
+const btn = document.getElementById('escapeBtn');
+btn.style.opacity = 1; // fade in
+btn.onclick = () => {
+  window.location.href = "https://rachelwalbom.github.io/";
+};
     escapeWrapper.appendChild(escapeContainer);
 
     // Fade in the Escape button
