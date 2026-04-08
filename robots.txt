@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /hidden
+
+# Key for those who look deeper...
+# ACCESS-GRANTED-42
